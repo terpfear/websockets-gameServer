@@ -54,16 +54,16 @@ As long as player and game can respond to these simple requests, any game can be
 [wsgs.c, wsgs.h]
 This combines makes use of all the above files above and is where the crux of the WebSocket GameServer lives. It contains four very important functions
 
-###serverLoop
+###-serverLoop
 This loop contains all the code for accepting new clients, performing the handshake and adding them to the game lobby.
 
-###gameLoop
+###-gameLoop
 This loop is a pthread that lobby creates for every game. It runs the game by taking messages from the clients and passing them onto implemented game and vice versa. There is also a seperate type of message that starts with "chat:" that does not get passed to the game, instead it is sent to all of the particpants of the game.
 
-###wsgs_sendMessage
+###-wsgs_sendMessage
 This functions passes a string message to all of the connected clients of the game
 
-##wsgs_sendSingleMessage
+###-wsgs_sendSingleMessage
 This function passes a string message to single participant in the game
 
 #Run Time Structure
