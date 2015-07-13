@@ -32,24 +32,28 @@ websocket_close - Create a WebSocket message to close a connection with a client
 [lobby.c, lobby.h, game.c, game.h, player.c, player.h]
 
 I decided that all games must have a game lobby, it can completely trivial or a full fledged game lobby, the one provided is a fairly trivial lobby that waits until there are at least two people in the lobby and then spawns a new game. The game and player must have a few functions implemented for a game to work and it is completely implementation dependent:
-  Player:
-    init_player();
-    clear_player();
-    player_setName
-    player_getName
-    player_getId
-  Game:
-    init_game();
-    clear_game();
-    game_getQuorum();
-    game_getId
-    game_getCurNumPlayers
-    game_getMaxPlayers
-    game_addPlayer
-    game_getStateString
-    game_getPlayer
-    game_changeState 
-    game_playerQuit
+<ul>
+  <li>Player:<ul>
+    <li>init_player();</li>
+    <li>clear_player();</li>
+    <li>player_setName</li>
+    <li>player_getName</li>
+    <li>player_getId</li>
+  </ul></li>
+  <li>Game:<ul>
+    <li>init_game();</li>
+    <li>clear_game();</li>
+    <li>game_getQuorum();</li>
+    <li>game_getId</li>
+    <li>game_getCurNumPlayers</li>
+    <li>game_getMaxPlayers</li>
+    <li>game_addPlayer</li>
+    <li>game_getStateString</li>
+    <li>game_getPlayer</li>
+    <li>game_changeState</li>
+    <li>game_playerQuit</li>
+  </ul></li>
+</ul>
 As long as player and game can respond to these simple requests, any game can be implemented. In general, the lobby will create players, add them to a game when appropriate and create game threads. Game threads will pass messages to game.c requesting to the change the state of the game and the game will respond with a message. All of these message are completely generic and are defined by the game implementor. More than likely, the message will only make sense to the functions in game.c and wherever the client code lives (in the case of websockets, this is the javascript client side).
 
 ##WebSocket-GameServer
@@ -71,14 +75,15 @@ This function passes a string message to single participant in the game
 
 #Run Time Structure
 There are two main loops and a theoretically infinite number of game loops. The main loops are the TCP server and the Game Lobby. The game lobby will spawn a pthread for each game it creates.
-
+<pre>
 Main.c
 |-----------------------------------------|
 Server.c                                  |
 |                                         |
 wsgs.c(ServerLoop)                        |
-|---------------------[lobby queue]-----lobbyLoop
+|---------------------[add Player]-----lobbyLoop
                                           |
                                           |---------------------wsgs.c(gameLoop)
                                           |---------------------wsgs.c(gameLoop)
                                           |---------------------wsgs.c(gameLoop)
+</pre>
